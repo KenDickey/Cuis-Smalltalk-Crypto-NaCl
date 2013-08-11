@@ -3,7 +3,7 @@ Cuis-NaCl
 
 ### Cuis interface to NaCl (pronounced "salt") cryptographic library
 
-Ported to Cuid from the Squeak/Pharo code originally by Tony Garnock-Jones 
+Ported to Cuis from the Squeak/Pharo code originally by Tony Garnock-Jones 
   http://www.eighty-twenty.org/index.cgi/tech/smalltalk/nacl-for-squeak-and-pharo-20130601.html
 
 
