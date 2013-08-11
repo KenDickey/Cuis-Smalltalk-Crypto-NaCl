@@ -9,8 +9,8 @@ Ported to Cuis from the Squeak/Pharo code originally by Tony Garnock-Jones
 
 ### Installation
 
-Get and install the NaCl (salt) code from its creators
-  http://nacl.cr.yp.to
+Get and install the NaCl (salt) code
+  https://github.com/jedisct1/libsodium
 
 Load the package in Cuis 4.2
 
@@ -21,3 +21,7 @@ Load the package in Cuis 4.2
 
 	Feature require: 'Crypto-NaCl'.  "Note NaCl has $N and $C capitalized"
 ````
+
+### Further documentation available at
+
+  http://nacl.cr.yp.to
