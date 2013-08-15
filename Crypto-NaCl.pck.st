@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1789] on 13 August 2013 at 7:27:03.338941 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #1788] on 11 August 2013 at 3:17:11.371678025 pm'!
 'Description Smalltalk interface to the NaCl (salt) crypto library'!
-!provides: 'Crypto-NaCl' 1 2!
+!provides: 'Crypto-NaCl' 1 3!
 !requires: 'FFI' 1 nil nil!
 !requires: 'Cuis-Base' 42 1788 nil!
 !classDefinition: #NaclError category: #'Crypto-NaCl'!
@@ -93,11 +93,6 @@ TestCase subclass: #NaclTests
 NaclTests class
 	instanceVariableNames: ''!
 
-
-!Nacl commentStamp: '<historical>' prior: 0!
-Nacl sodiumVersionString.  "--> '0.4.2' "
-
-Note  NaclTests>>testExample!
 
 !ByteArray methodsFor: '*Crypto-Nacl' stamp: 'KenD 8/10/2013 08:13'!
 hexEquals: aHexString
@@ -399,9 +394,32 @@ testBoxOpen	| n m |	n := ByteArray readHexFrom: '065114ca5a687e0544a88e6fc757b
 !NaclTests methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 18:11'!
 testBoxOpenFail	| n |	n := ByteArray readHexFrom: '065114ca5a687e0544a88e6fc757b30afc70a0355854fd54'.	self should: [		self boxKey			boxOpen: (ByteArray readHexFrom: '3bc95b7983622e8afb763723703e17c6739be9c317') "note final digit!!"			nonce: n publicKey: self boxKey publicKey]		raise: NaclError.! !
 
-!NaclTests methodsFor: 'as yet unclassified' stamp: 'KenD 8/13/2013 19:25'!
-testExample
-	"Test showing a simple example start to end"
+!NaclTests methodsFor: 'as yet unclassified' stamp: 'KenD 8/11/2013 17:15'!
+testExampleHighlevel
+	"Test showing a simple example start to end, using the highlevel API"
+
+	| aliceSeed bobSeed envelope aKeys bKeys plainText |
+	aliceSeed := '.A man, a plan, a canal, Panama.'.
+	bobSeed := 'Cuis is the best thing on wheels'.
+	
+	aKeys := NaclBoxSecretKey fromSeed: aliceSeed asByteArray.
+	bKeys := NaclBoxSecretKey fromSeed: bobSeed asByteArray.
+
+	plainText := 'Quando in le Curso del Eventos human, il deveni necessari
+pro un Populo dissolver le Bandas Politic que les ha con 
+nectite con un altere, e assumer inter le Poteres del Terra, le
+Position separate e equal al qual le Leges del Natura e del
+Deo de Natura les da titulo, un decente Respecto al Opinio-
+nes del Humanitate require que illes declara le causas que les
+impelle al Separation.'.
+		"Alice encrypts using her private key and Bob's public key"	envelope := aKeys box: plainText asByteArray publicKey: bKeys publicKey.
+
+	"Bob decrypts using Alice's public key ahd his private key"
+	self assert:		(bKeys boxOpen: envelope publicKey: aKeys publicKey) asString = plainText.! !
+
+!NaclTests methodsFor: 'as yet unclassified' stamp: 'KenD 8/11/2013 17:16'!
+testExampleLowlevel
+	"Test showing a simple example start to end, using the lowlevel API"
 
 	| aliceSeed bobSeed nonce aKeys bKeys plainText box |
 	aliceSeed := '.A man, a plan, a canal, Panama.'.
@@ -411,7 +429,7 @@ testExample
 	bKeys := Nacl boxKeypairFromSeed: bobSeed asByteArray.
 
 	plainText := 'Quando in le Curso del Eventos human, il deveni necessari
-pro un Populo dissolver le Bandas Politic que les ha con-Nacl boxN
+pro un Populo dissolver le Bandas Politic que les ha con 
 nectite con un altere, e assumer inter le Poteres del Terra, le
 Position separate e equal al qual le Leges del Natura e del
 Deo de Natura les da titulo, un decente Respecto al Opinio-
@@ -420,7 +438,7 @@ impelle al Separation.'.
 	
 	nonce := Nacl boxNonce.
 	
-	"Alice encrypts using her private key and Bob's publ;ic key"
+	"Alice encrypts using her private key and Bob's public key"
 	box := Nacl box: plainText asByteArray  nonce: nonce pk: bKeys  publicKey bytes sk: aKeys secretBytes.
 
 	"Bob decrypts using Alice's public key ahd his private key"
