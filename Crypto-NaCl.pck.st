@@ -2,7 +2,7 @@
 'Description Smalltalk interface to the NaCl (salt) crypto library'!
 !provides: 'Crypto-NaCl' 1 3!
 !requires: 'FFI' 1 nil nil!
-!requires: 'Cuis-Base' 42 1788 nil!
+!requires: 'Cuis-Base' 42 1803 nil!
 !classDefinition: #NaclError category: #'Crypto-NaCl'!
 Error subclass: #NaclError
 	instanceVariableNames: ''
