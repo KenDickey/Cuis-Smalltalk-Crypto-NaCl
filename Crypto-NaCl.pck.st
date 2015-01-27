@@ -1,8 +1,8 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #1788] on 11 August 2013 at 3:17:11.371678025 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2147] on 26 January 2015 at 5:31:44.502361 pm'!
 'Description Smalltalk interface to the NaCl (salt) crypto library'!
-!provides: 'Crypto-NaCl' 1 3!
+!provides: 'Crypto-NaCl' 1 4!
 !requires: 'FFI' 1 nil nil!
-!requires: 'Cuis-Base' 42 1803 nil!
+!requires: 'Cuis-Base' 42 2147 nil!
 !classDefinition: #NaclError category: #'Crypto-NaCl'!
 Error subclass: #NaclError
 	instanceVariableNames: ''
@@ -106,44 +106,44 @@ equals: otherString
 
 	^ (self compare: otherString caseSensitive: true) = 2! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:51'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 1/26/2015 17:22'!
 apiCryptoBoxCipher: c message: m messageLength: mlen nonce: n pk: pk sk: sk
-	<apicall: long 'crypto_box_curve25519xsalsa20poly1305_ref' (byte* byte* ulonglong byte* byte* byte*) module: 'libsodium'>
+	<apicall: long 'crypto_box_curve25519xsalsa20poly1305' (byte* byte* ulonglong byte* byte* byte*) module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:51'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 1/26/2015 17:29'!
 apiCryptoBoxKeypairPk: pk sk: sk
-	<apicall: long 'crypto_box_curve25519xsalsa20poly1305_ref_keypair' (byte* byte*) module: 'libsodium'>
+	<apicall: long 'crypto_box_curve25519xsalsa20poly1305_keypair' (byte* byte*) module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:51'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 1/26/2015 17:25'!
 apiCryptoBoxOpenMessage: m cipher: c cipherLength: mlen nonce: n pk: pk sk: sk
-	<apicall: long 'crypto_box_curve25519xsalsa20poly1305_ref_open' (byte* byte* ulonglong byte* byte* byte*) module: 'libsodium'>
+	<apicall: long 'crypto_box_curve25519xsalsa20poly1305_open' (byte* byte* ulonglong byte* byte* byte*) module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:51'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 1/26/2015 17:23'!
 apiCryptoHashSha512Output: outByteArray input: inByteArray inputLength: inByteArrayLength
-	<apicall: long 'crypto_hash_sha512_ref' (byte* byte* ulonglong) module: 'libsodium'>
+	<apicall: long 'crypto_hash_sha512' (byte* byte* ulonglong) module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:51'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 1/26/2015 17:24'!
 apiCryptoScalarmultCurve25519BaseTarget: pk source: sk
-	<apicall: long 'crypto_scalarmult_curve25519_ref_base' (byte* byte*) module: 'libsodium'>
+	<apicall: long 'crypto_scalarmult_curve25519_base' (byte* byte*) module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:51'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 1/26/2015 17:25'!
 apiCryptoSecretboxCipher: c message: m messageLength: mlen nonce: n key: key
-	<apicall: long 'crypto_secretbox_xsalsa20poly1305_ref' (byte* byte* ulonglong byte* byte*) module: 'libsodium'>
+	<apicall: long 'crypto_secretbox_xsalsa20poly1305' (byte* byte* ulonglong byte* byte*) module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:51'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 1/26/2015 17:26'!
 apiCryptoSecretboxOpenMessage: m cipher: c cipherLength: mlen nonce: n key: key
-	<apicall: long 'crypto_secretbox_xsalsa20poly1305_ref_open' (byte* byte* ulonglong byte* byte*) module: 'libsodium'>
+	<apicall: long 'crypto_secretbox_xsalsa20poly1305_open' (byte* byte* ulonglong byte* byte*) module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:52'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 1/26/2015 17:26'!
 apiCryptoSignBuffer: b bufferLength: blenPtr message: m length: mlen privateKey: sk 
-	<apicall: long 'crypto_sign_ed25519_ref' (byte* byte* byte* ulonglong byte*) module: 'libsodium'>
+	<apicall: long 'crypto_sign_ed25519' (byte* byte* byte* ulonglong byte*) module: 'libsodium'>
 	^self externalCallFailed! !
 
 !Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:52'!
@@ -151,14 +151,14 @@ apiCryptoSignKeypairPk: pk sk: sk
 	<apicall: long 'crypto_sign_ed25519_ref_keypair' (byte* byte*) module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:52'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 1/26/2015 17:27'!
 apiCryptoSignKeypairPk: pk sk: sk seed: seed
-	<apicall: long 'crypto_sign_ed25519_ref_seed_keypair' (byte* byte* byte*) module: 'libsodium'>
+	<apicall: long 'crypto_sign_ed25519_seed_keypair' (byte* byte* byte*) module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:52'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 1/26/2015 17:28'!
 apiCryptoSignOpenBuffer: b bufferLength: blenPtr signedMessage: sm length: smlen publicKey: pk
-	<apicall: long 'crypto_sign_ed25519_ref_open' (byte* byte* byte* ulonglong byte*) module: 'libsodium'>
+	<apicall: long 'crypto_sign_ed25519_open' (byte* byte* byte* ulonglong byte*) module: 'libsodium'>
 	^self externalCallFailed! !
 
 !Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:52'!
