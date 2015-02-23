@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2147] on 26 January 2015 at 5:31:44.502361 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2169] on 23 February 2015 at 3:49:37.61466 pm'!
 'Description Smalltalk interface to the NaCl (salt) crypto library'!
-!provides: 'Crypto-NaCl' 1 4!
+!provides: 'Crypto-NaCl' 1 6!
 !requires: 'FFI' 1 nil nil!
 !requires: 'Cuis-Base' 42 2147 nil!
 !classDefinition: #NaclError category: #'Crypto-NaCl'!
@@ -93,6 +93,12 @@ TestCase subclass: #NaclTests
 NaclTests class
 	instanceVariableNames: ''!
 
+
+!Nacl commentStamp: '<historical>' prior: 0!
+I am the interface to libsodium, the NaCl (salt) crypto library.
+
+See https://github.com/jedisct1/libsodium
+!
 
 !ByteArray methodsFor: '*Crypto-Nacl' stamp: 'KenD 8/10/2013 08:13'!
 hexEquals: aHexString
@@ -339,18 +345,27 @@ signSecretKeyBytes
 signSeedBytes
 	^ self signSecretKeyBytes // 2! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:52'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 2/23/2015 15:40'!
 sodiumVersionMajor
-	<apicall: long 'sodium_version_major' () module: 'libsodium'>
+"
+	Nacl sodiumVersionMajor.
+"
+	<apicall: long 'sodium_library_version_major' () module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:52'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 2/23/2015 15:40'!
 sodiumVersionMinor
-	<apicall: long 'sodium_version_minor' () module: 'libsodium'>
+"
+	Nacl sodiumVersionMinor.
+"
+	<apicall: long 'sodium_library_version_minor' () module: 'libsodium'>
 	^self externalCallFailed! !
 
-!Nacl class methodsFor: 'as yet unclassified' stamp: 'tonyg 6/1/2013 20:52'!
+!Nacl class methodsFor: 'as yet unclassified' stamp: 'KenD 2/23/2015 15:41'!
 sodiumVersionString
+"
+	Nacl  sodiumVersionString.
+"
 	<apicall: char* 'sodium_version_string' () module: 'libsodium'>
 	^self externalCallFailed! !
 
@@ -618,8 +633,14 @@ testBoxOpenFail
 			nonce: n publicKey: self boxKey publicKey]
 		raise: NaclError.! !
 
-!NaclTests methodsFor: 'as yet unclassified' stamp: 'KenD 8/11/2013 17:15'!
-testExampleHighlevel
+!NaclTests methodsFor: 'as yet unclassified' stamp: 'KenD 8/10/2013 08:15'!
+testHash
+	self assert: ((Nacl hash: (ByteArray new: 0)) hexEquals: 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e').
+	self assert: ((Nacl hashString: 'The quick brown fox jumps over the lazy dog') hexEquals: '07e547d9586f6a73f73fbac0435ed76951218fb7d0c8d788a309d785436bbb642e93a252a954f23912547d1e8a3b5ed6e1bfd7097821233fa0538f3db854fee6').
+	self assert: ((Nacl hashString: 'The quick brown fox jumps over the lazy dog.') hexEquals: '91ea1245f20d46ae9a037a989f54f1f790f0a47607eeb8a14d12890cea77a1bbc6c7ed9cf205e67b7f2b8fd4c7dfd3a7a8617e45f3c463d481c7e586c39ac1ed').! !
+
+!NaclTests methodsFor: 'as yet unclassified' stamp: 'KenD 2/23/2015 15:42'!
+testNaclHighLevelAPI
 	"Test showing a simple example start to end, using the highlevel API"
 
 	| aliceSeed bobSeed envelope aKeys bKeys plainText |
@@ -644,8 +665,8 @@ impelle al Separation.'.
 	self assert:
 		(bKeys boxOpen: envelope publicKey: aKeys publicKey) asString = plainText.! !
 
-!NaclTests methodsFor: 'as yet unclassified' stamp: 'KenD 8/11/2013 17:16'!
-testExampleLowlevel
+!NaclTests methodsFor: 'as yet unclassified' stamp: 'KenD 2/23/2015 15:42'!
+testNaclLowLevelAPI
 	"Test showing a simple example start to end, using the lowlevel API"
 
 	| aliceSeed bobSeed nonce aKeys bKeys plainText box |
@@ -673,12 +694,6 @@ impelle al Separation.'.
 		(Nacl boxOpen: box nonce: nonce pk: aKeys publicKey bytes sk: bKeys secretBytes) asString
 		= plainText
 	).! !
-
-!NaclTests methodsFor: 'as yet unclassified' stamp: 'KenD 8/10/2013 08:15'!
-testHash
-	self assert: ((Nacl hash: (ByteArray new: 0)) hexEquals: 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e').
-	self assert: ((Nacl hashString: 'The quick brown fox jumps over the lazy dog') hexEquals: '07e547d9586f6a73f73fbac0435ed76951218fb7d0c8d788a309d785436bbb642e93a252a954f23912547d1e8a3b5ed6e1bfd7097821233fa0538f3db854fee6').
-	self assert: ((Nacl hashString: 'The quick brown fox jumps over the lazy dog.') hexEquals: '91ea1245f20d46ae9a037a989f54f1f790f0a47607eeb8a14d12890cea77a1bbc6c7ed9cf205e67b7f2b8fd4c7dfd3a7a8617e45f3c463d481c7e586c39ac1ed').! !
 
 !NaclTests methodsFor: 'as yet unclassified' stamp: 'KenD 8/10/2013 09:03'!
 testSecretbox
