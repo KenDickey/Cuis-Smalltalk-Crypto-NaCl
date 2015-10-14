@@ -1,6 +1,6 @@
 Cuis-NaCl
 ==========
-Tested with Cuis 4.2 revision 2424; libsodium 1.0.2 on Intel and ARM processors
+Tested with Cuis 4.2 revision 2525; libsodium 1.0.2 on Intel and ARM processors
 
 ### Cuis interface to NaCl (pronounced "salt") cryptographic library
 
@@ -20,6 +20,8 @@ Load the package in Cuis 4.2
 ````
 
 Note simple end-to-end usage example: NaclTests>>TestExampleHighLevel
+
+If zero unit tests pass, be sure to place the libsodium library file (libsodium.so on Linux) in your image directory (probably Cuis-Smalltalk-Dev).
 
 ### Further documentation available at
 
