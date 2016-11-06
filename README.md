@@ -1,6 +1,6 @@
 Cuis-NaCl
 ==========
-Tested with Cuis 4.2 revision 2783; libsodium 1.0.2 on Intel and ARM processors
+Tested with Cuis 4.2 revision 2972; libsodium 1.0.2 on Intel and ARM processors
 
 ### Cuis interface to NaCl (pronounced "salt") cryptographic library
 
