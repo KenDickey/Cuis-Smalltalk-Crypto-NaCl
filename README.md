@@ -1,6 +1,6 @@
 Cuis-NaCl
 ==========
-Tested with Cuis 4.2 revision 2972; libsodium 1.0.2 on Intel and ARM processors
+Tested with Cuis 6.0 revision 5677; libsodium 1.0.18 on Aarch64 processor
 
 ### Cuis interface to NaCl (pronounced "salt") cryptographic library
 
@@ -13,7 +13,7 @@ Ported to Cuis from the Squeak/Pharo code originally by Tony Garnock-Jones
 Get and install the NaCl (salt) code
   https://github.com/jedisct1/libsodium
 
-Load the package in Cuis 4.2
+Load the package in Cuis 6.0
 
 ````Smalltalk
 	Feature require: 'Crypto-NaCl'.  "Note NaCl has $N and $C capitalized"
