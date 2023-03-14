@@ -19,7 +19,7 @@ Load the package in Cuis 6.0
 	Feature require: 'Crypto-NaCl'.  "Note NaCl has $N and $C capitalized"
 ````
 
-Note simple end-to-end usage example: NaclTests>>TestExampleHighLevel
+Note simple end-to-end usage example: NaclTests>>testNaclHighLevelAPI
 
 If zero unit tests pass, be sure to place the libsodium library file (libsodium.so on Linux) in your image directory (probably Cuis-Smalltalk-Dev).
 
